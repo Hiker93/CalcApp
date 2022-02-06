@@ -12,20 +12,16 @@ public class Controller implements Runnable {
         this.view = new View(calculator);
     }
 
-    private static float getDimensionFromUser() {
-        boolean inputIsNotFloat = true;
-        Scanner scanner = new Scanner(System.in);
-        float value = 0;
-        while(inputIsNotFloat) {
-            try {
-                value = scanner.nextFloat();
-                inputIsNotFloat = false;
-            } catch(InputMismatchException e) {
-                System.out.println("Dear user, i need a number <3");
-                scanner.next();
-            }
-        }
-        return value;
+
+    @Override
+    public void run() {
+        System.out.println("$");
+        addItem();
+        view.printItem();
+        setRatio();
+        calculatedItem();
+        view.printItem();
+
     }
 
     public Calculator addItem() {
@@ -35,22 +31,27 @@ public class Controller implements Runnable {
             String name = scanner.nextLine();
             view.getItemUnitPrintln();
             String unit = scanner.nextLine();
-            float quantity = 0;
-            boolean inputIsNotFloat = true;
             view.getItemQuantityPrintln();
-            while(inputIsNotFloat) {
-                try {
-                    quantity = scanner.nextFloat();
-                    inputIsNotFloat = false;
-                } catch(InputMismatchException e) {
-                    System.out.println("Dude, quantity has to be a number!");
-                    scanner.nextLine();
-                }
-            }
+            float quantity = getItemQuantityFromUser();
             calculator.addToList(name, quantity, unit);
         }
-
         return calculator;
+    }
+
+    private float getItemQuantityFromUser() {
+        boolean inputIsNotFloat = true;
+        float quantity = 0;
+        Scanner scanner = new Scanner(System.in);
+        while(inputIsNotFloat) {
+            try {
+                quantity = scanner.nextFloat();
+                inputIsNotFloat = false;
+            } catch(InputMismatchException e) {
+                System.out.println("Dude, quantity has to be a number!");
+                scanner.nextLine();
+            }
+        }
+        return quantity;
     }
 
     private boolean continueAddingItems() {
@@ -76,15 +77,19 @@ public class Controller implements Runnable {
         return calculator;
     }
 
-    @Override
-    public void run() {
-        System.out.println("$");
-        addItem();
-        view.printItem();
-        setRatio();
-        System.out.println(calculator.getRatio());
-        calculatedItem();
-        view.printItem();
-
+    private float getDimensionFromUser() {
+        boolean inputIsNotFloat = true;
+        Scanner scanner = new Scanner(System.in);
+        float value = 0;
+        while(inputIsNotFloat) {
+            try {
+                value = scanner.nextFloat();
+                inputIsNotFloat = false;
+            } catch(InputMismatchException e) {
+                System.out.println("Dear user, i need a number <3");
+                scanner.next();
+            }
+        }
+        return value;
     }
 }
